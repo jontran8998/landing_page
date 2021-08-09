@@ -70,7 +70,7 @@ const navBuild = (sections) => {
     // Get nav menu name
     const text = document.createTextNode(`${section.dataset.nav}`);
 
-    // Append elements
+    // Appending elements
     navLink.appendChild(text);
     navLi.appendChild(navLink);
     navbarList.appendChild(navLi);
@@ -80,7 +80,7 @@ const navBuild = (sections) => {
 
 
 
-// Add class 'active' to section and nav menu when near top of viewport
+// Add class 'active' to 'section' and 'nav menu' when near top of viewport
 const activeChange = (sections) => {
   window.addEventListener('scroll', () => {
     let current = '';
@@ -124,13 +124,15 @@ const activeChange = (sections) => {
  * 
 */
 
-// Build menu 
 
 // Check if section is null or not
 if (sections.length != 0) {
+
+  // Build menu 
   navBuild(sections)
+
+  // Set sections as active
+  activeChange(sections)
 }
    
 
-// Set sections as active
-activeChange(sections)
