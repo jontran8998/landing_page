@@ -31,16 +31,24 @@ const sections = document.querySelectorAll("section");
  * 
 */
 
+// remove classList of an element function
+const removeClassList = (li, classList) => {
+  return li.classList.remove(classList)
+}
 
+// add classList of an element function
+const addClassList = (li, classList) => {
+  return li.classList.add(classList)
+}
 /**
  * End Helper Functions
  * Begin Main Functions
  * 
 */
 
-// build the nav
+// build the nav menu
 const navBuild = (sections) => {
-  // Loop over the list of sections to build navbar menu items
+  // Loop over the array of sections
   for (section of sections) {
     // Create <li> element
     const navLi = document.createElement('li');
@@ -54,11 +62,12 @@ const navBuild = (sections) => {
     navLink.classList = 'menu__link';
 
     // Add event listener to nav links for 'click' event to scroll to the corresponding section
+    // Scroll to anchor ID using scrollTO event
     navLink.addEventListener('click', () => {
       section.scrollIntoView({behavior: 'smooth'})
     })
 
-    // Get nav name
+    // Get nav menu name
     const text = document.createTextNode(`${section.dataset.nav}`);
 
     // Append elements
@@ -71,11 +80,42 @@ const navBuild = (sections) => {
 
 
 
+// Add class 'active' to section and nav menu when near top of viewport
+const activeChange = (sections) => {
+  window.addEventListener('scroll', () => {
+    let current = '';
+    for (section of sections) {
+      // assign the distance from section to the top of the page
+      const sectionTop = section.offsetTop;
+      // assign the height of section
+      const sectionHeight = section.clientHeight;
+      // get current postion when scrolling
+      if (pageYOffset >= (sectionTop - sectionHeight / 3) ) {
+        current = section.getAttribute('id')
+      }  
+    }
 
-// Add class 'active' to section when near top of viewport
+    // add and remove active class to particular section
+    sections.forEach(section => {
+      removeClassList(section, 'your-active-class');
+      if (section.id.includes(current) && current.length > 0) {
+        addClassList(section, 'your-active-class')
+      }
+    })
+
+    // add and remove active class to particular nav menu
+    const navLi = document.querySelectorAll('nav ul li a')
+    navLi.forEach(li => {
+      removeClassList(li, 'active-class');
+      if (li.id.includes(current) && current.length > 0) {
+        addClassList(li, 'active-class')
+      }
+    })
+
+  })
+}
 
 
-// Scroll to anchor ID using scrollTO event
 
 
 /**
@@ -91,6 +131,6 @@ if (sections.length != 0) {
   navBuild(sections)
 }
    
-// Scroll to section on link click
 
 // Set sections as active
+activeChange(sections)
